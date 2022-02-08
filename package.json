@@ -1,0 +1,43 @@
+{
+  "name": "snake-game",
+  "private": true,
+  "version": "1.0.0",
+  "description": "This project is recreating classic snake game, but with additional features. Goal of the game is to move snake using arrow keys to eat food and avoid hitting wall or snake itself.",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack serve --config webpack.common.js --open",
+    "build": "webpack --config webpack.common.js",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mojotron/snake-game.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mojotron/snake-game/issues"
+  },
+  "homepage": "https://github.com/mojotron/snake-game#readme",
+  "dependencies": {
+    "webpack": "^5.68.0",
+    "webpack-cli": "^4.9.2"
+  },
+  "devDependencies": {
+    "css-loader": "^6.6.0",
+    "eslint": "^8.8.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.25.4",
+    "html-webpack-plugin": "^5.5.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.3.3",
+    "prettier": "^2.5.1",
+    "style-loader": "^3.3.1",
+    "webpack-dev-server": "^4.7.4"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
+  }
+}
