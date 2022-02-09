@@ -1,3 +1,6 @@
 import '../styles/main.css';
 
-alert('hello');
+import { drawBoard, displayBoard } from './Board';
+
+const tempBoard = drawBoard(10);
+displayBoard(tempBoard);
