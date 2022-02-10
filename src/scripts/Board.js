@@ -2,13 +2,15 @@ export const drawBoard = size =>
   Array.from({ length: size }, () => Array.from({ length: size }, () => null));
 
 export const displayBoard = board => {
-  console.log(` ${'-'.repeat(board.length)}`);
+  const display = [];
+  display.push(` ${'-'.repeat(board.length)}`);
   board.forEach(row => {
     let str = '|';
     row.forEach(ele => {
       str += `${ele || ' '}`;
     });
-    console.log(`${str}|`);
+    display.push(`${str}|`);
   });
-  console.log(` ${'-'.repeat(board.length)}`);
+  display.push(` ${'-'.repeat(board.length)}`);
+  console.log(display.join('\n'));
 };
