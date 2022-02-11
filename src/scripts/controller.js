@@ -1,35 +1,21 @@
 import '../styles/main.css';
+import { createGridDOM, getRandomBoardPosition } from './Board';
 
-import { drawBoard, displayBoard } from './Board';
-
-const tempBoard = drawBoard(10);
-
+const boardElement = document.querySelector('.board');
 // temp snake
 const snake = [
-  { x: 3, y: 5 },
-  { x: 3, y: 4 },
   { x: 3, y: 3 },
   { x: 3, y: 2 },
   { x: 3, y: 1 },
 ];
+let tail;
 
-const displaySnake = (board, snakeArr) => {
-  snakeArr.forEach(block => (board[block.x][block.y] = 'O'));
-};
-
-const boardElement = document.querySelector('.board');
-const createBoard = size => {
-  boardElement.innerHTML = '';
-  boardElement.style.setProperty('--rows', size);
-  boardElement.style.setProperty('--columns', size);
-};
-
-createBoard(15);
+createGridDOM(10);
 
 const updateSnakePosition = snakeArr => {
   snakeArr.forEach(block => {
     const x = document.createElement('div');
-    x.style.background = 'green';
+    x.classList.add('snake');
     x.style.gridArea = `${block.x + 1}/${block.y + 1}/${block.x + 2}/${
       block.y + 2
     }`;
@@ -37,8 +23,40 @@ const updateSnakePosition = snakeArr => {
   });
 };
 
-updateSnakePosition(snake);
+const appleHit = (snakeHead, apple) =>
+  snakeHead.x === apple.x && snakeHead.y === apple.y;
 
+const wallHit = snakeHead =>
+  snakeHead.x < 0 ||
+  snakeHead.x === 10 ||
+  snakeHead.y < 0 ||
+  snakeHead.y === 10;
+
+const snakeHit = () =>
+  snake.slice(1).some(ele => ele.x === snake[0].x && ele.y === snake[0].y);
+
+const createApple = () => {
+  const coords = getRandomBoardPosition(10);
+  if (snake.some(ele => ele.x === coords.x && ele.y === coords.y)) {
+    return createApple();
+  }
+  return coords;
+};
+
+const displayApple = coords => {
+  const apple = document.createElement('div');
+  apple.classList.add('apple');
+  apple.style.gridArea = `${coords.x + 1}/${coords.y + 1}/${coords.x + 2}/${
+    coords.y + 2
+  }`;
+  boardElement.append(apple);
+  return apple;
+};
+
+let appleCoords = createApple();
+
+updateSnakePosition(snake);
+displayApple(appleCoords);
 let lastDirection = 'right';
 const moveSnake = direction => {
   if (lastDirection === 'left' && direction === 'right') return;
@@ -47,6 +65,7 @@ const moveSnake = direction => {
   if (lastDirection === 'down' && direction === 'up') return;
 
   lastDirection = direction;
+  tail = snake.at(-1);
   for (let i = snake.length - 1; i > 0; i -= 1) {
     snake[i] = { ...snake[i - 1] };
   }
@@ -56,15 +75,26 @@ const moveSnake = direction => {
   if (direction === 'left') snake[0].y -= 1;
 };
 
-displaySnake(tempBoard, snake);
-displayBoard(tempBoard);
-
 window.addEventListener('keydown', e => {
   if (e.key === 'ArrowDown') moveSnake('down');
   if (e.key === 'ArrowUp') moveSnake('up');
   if (e.key === 'ArrowRight') moveSnake('right');
   if (e.key === 'ArrowLeft') moveSnake('left');
 
-  createBoard(15);
+  if (appleHit(snake[0], appleCoords)) {
+    appleCoords = createApple();
+    snake.push(tail);
+  }
+
+  if (wallHit(snake[0])) {
+    alert('WALL');
+  }
+
+  if (snakeHit()) {
+    alert('OUCH');
+  }
+
+  boardElement.innerHTML = '';
   updateSnakePosition(snake);
+  displayApple(appleCoords);
 });

@@ -35,3 +35,12 @@ body {
   grid-template-columns: repeat(var(--columns), 1fr);
   background-color: rgb(190, 213, 233);
 }
+
+.snake {
+  background: rgb(79, 131, 30);
+  border: 2px solid rgb(105, 89, 55);
+}
+.apple {
+  background: rgb(199, 34, 34);
+  border-radius: 50%;
+}
