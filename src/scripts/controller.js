@@ -53,36 +53,50 @@ const displayApple = coords => {
   return apple;
 };
 
-let appleCoords = createApple();
+const appleCoords = createApple();
 
 updateSnakePosition(snake);
 displayApple(appleCoords);
-let lastDirection = 'right';
-const moveSnake = direction => {
-  if (lastDirection === 'left' && direction === 'right') return;
-  if (lastDirection === 'right' && direction === 'left') return;
-  if (lastDirection === 'up' && direction === 'down') return;
-  if (lastDirection === 'down' && direction === 'up') return;
 
-  lastDirection = direction;
+let direction = 'right';
+
+const moveSnake = curDirection => {
+  // if (lastDirection === 'left' && direction === 'right') return;
+  // if (lastDirection === 'right' && direction === 'left') return;
+  // if (lastDirection === 'up' && direction === 'down') return;
+  // if (lastDirection === 'down' && direction === 'up') return;
+
+  // lastDirection = direction;
   tail = snake.at(-1);
   for (let i = snake.length - 1; i > 0; i -= 1) {
     snake[i] = { ...snake[i - 1] };
   }
-  if (direction === 'down') snake[0].x += 1;
-  if (direction === 'up') snake[0].x -= 1;
-  if (direction === 'right') snake[0].y += 1;
-  if (direction === 'left') snake[0].y -= 1;
+  if (curDirection === 'down') snake[0].x += 1;
+  if (curDirection === 'up') snake[0].x -= 1;
+  if (curDirection === 'right') snake[0].y += 1;
+  if (curDirection === 'left') snake[0].y -= 1;
 };
 
 window.addEventListener('keydown', e => {
-  if (e.key === 'ArrowDown') moveSnake('down');
-  if (e.key === 'ArrowUp') moveSnake('up');
-  if (e.key === 'ArrowRight') moveSnake('right');
-  if (e.key === 'ArrowLeft') moveSnake('left');
+  if (e.key === 'ArrowDown') {
+    if (direction === 'up') return;
+    direction = 'down';
+  }
+  if (e.key === 'ArrowUp') {
+    if (direction === 'down') return;
+    direction = 'up';
+  }
+  if (e.key === 'ArrowRight') {
+    if (direction === 'left') return;
+    direction = 'right';
+  }
+  if (e.key === 'ArrowLeft') {
+    if (direction === 'right') return;
+    direction = 'left';
+  }
 
   if (appleHit(snake[0], appleCoords)) {
-    appleCoords = createApple();
+    // appleCoords = createApple();
     snake.push(tail);
   }
 
@@ -93,8 +107,22 @@ window.addEventListener('keydown', e => {
   if (snakeHit()) {
     alert('OUCH');
   }
-
-  boardElement.innerHTML = '';
-  updateSnakePosition(snake);
-  displayApple(appleCoords);
 });
+
+// GAME LOOP
+let prevTimestamp;
+
+function gameLoop(timestamp) {
+  if (prevTimestamp !== undefined) {
+    // const deltaTime = timestamp - prevTimestamp;
+    // DISPLAY MOVING PARTS
+    moveSnake(direction);
+    boardElement.innerHTML = '';
+    updateSnakePosition(snake);
+    displayApple(appleCoords);
+  }
+  prevTimestamp = timestamp;
+  window.requestAnimationFrame(gameLoop);
+}
+
+window.requestAnimationFrame(gameLoop);
