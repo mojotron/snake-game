@@ -53,7 +53,7 @@ const displayApple = coords => {
   return apple;
 };
 
-const appleCoords = createApple();
+let appleCoords = createApple();
 
 updateSnakePosition(snake);
 displayApple(appleCoords);
@@ -94,34 +94,36 @@ window.addEventListener('keydown', e => {
     if (direction === 'right') return;
     direction = 'left';
   }
-
-  if (appleHit(snake[0], appleCoords)) {
-    // appleCoords = createApple();
-    snake.push(tail);
-  }
-
-  if (wallHit(snake[0])) {
-    alert('WALL');
-  }
-
-  if (snakeHit()) {
-    alert('OUCH');
-  }
 });
 
 // GAME LOOP
 let prevTimestamp;
 
 function gameLoop(timestamp) {
-  if (prevTimestamp !== undefined) {
-    // const deltaTime = timestamp - prevTimestamp;
-    // DISPLAY MOVING PARTS
-    moveSnake(direction);
+  if (prevTimestamp === undefined) prevTimestamp = timestamp;
+  const deltaTime = timestamp - prevTimestamp;
+  if (deltaTime > 500) {
+    prevTimestamp = timestamp;
     boardElement.innerHTML = '';
+    moveSnake(direction);
+    if (appleHit(snake[0], appleCoords)) {
+      appleCoords = createApple();
+      snake.push(tail);
+    }
+
+    if (wallHit(snake[0])) {
+      alert('WALL');
+      // location.reload();
+    }
+
+    if (snakeHit()) {
+      alert('OUCH');
+      // location.reload();
+    }
     updateSnakePosition(snake);
     displayApple(appleCoords);
   }
-  prevTimestamp = timestamp;
+
   window.requestAnimationFrame(gameLoop);
 }
 
