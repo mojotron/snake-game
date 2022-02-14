@@ -1,27 +1,12 @@
 import '../styles/main.css';
 import { createGridDOM, getRandomBoardPosition } from './Board';
+import Snake from './Snake';
 
 const boardElement = document.querySelector('.board');
-// temp snake
-const snake = [
-  { x: 3, y: 3 },
-  { x: 3, y: 2 },
-  { x: 3, y: 1 },
-];
-let tail;
-
-createGridDOM(10);
-
-const updateSnakePosition = snakeArr => {
-  snakeArr.forEach(block => {
-    const x = document.createElement('div');
-    x.classList.add('snake');
-    x.style.gridArea = `${block.x + 1}/${block.y + 1}/${block.x + 2}/${
-      block.y + 2
-    }`;
-    boardElement.append(x);
-  });
+const state = {
+  direction: 'right',
 };
+createGridDOM(10);
 
 const appleHit = (snakeHead, apple) =>
   snakeHead.x === apple.x && snakeHead.y === apple.y;
@@ -33,11 +18,13 @@ const wallHit = snakeHead =>
   snakeHead.y === 10;
 
 const snakeHit = () =>
-  snake.slice(1).some(ele => ele.x === snake[0].x && ele.y === snake[0].y);
+  Snake.snake
+    .slice(1)
+    .some(ele => ele.x === Snake.snake[0].x && ele.y === Snake.snake[0].y);
 
 const createApple = () => {
   const coords = getRandomBoardPosition(10);
-  if (snake.some(ele => ele.x === coords.x && ele.y === coords.y)) {
+  if (Snake.snake.some(ele => ele.x === coords.x && ele.y === coords.y)) {
     return createApple();
   }
   return coords;
@@ -55,44 +42,24 @@ const displayApple = coords => {
 
 let appleCoords = createApple();
 
-updateSnakePosition(snake);
 displayApple(appleCoords);
-
-let direction = 'right';
-
-const moveSnake = curDirection => {
-  // if (lastDirection === 'left' && direction === 'right') return;
-  // if (lastDirection === 'right' && direction === 'left') return;
-  // if (lastDirection === 'up' && direction === 'down') return;
-  // if (lastDirection === 'down' && direction === 'up') return;
-
-  // lastDirection = direction;
-  tail = snake.at(-1);
-  for (let i = snake.length - 1; i > 0; i -= 1) {
-    snake[i] = { ...snake[i - 1] };
-  }
-  if (curDirection === 'down') snake[0].x += 1;
-  if (curDirection === 'up') snake[0].x -= 1;
-  if (curDirection === 'right') snake[0].y += 1;
-  if (curDirection === 'left') snake[0].y -= 1;
-};
 
 window.addEventListener('keydown', e => {
   if (e.key === 'ArrowDown') {
-    if (direction === 'up') return;
-    direction = 'down';
+    if (state.direction === 'up') return;
+    state.direction = 'down';
   }
   if (e.key === 'ArrowUp') {
-    if (direction === 'down') return;
-    direction = 'up';
+    if (state.direction === 'down') return;
+    state.direction = 'up';
   }
   if (e.key === 'ArrowRight') {
-    if (direction === 'left') return;
-    direction = 'right';
+    if (state.direction === 'left') return;
+    state.direction = 'right';
   }
   if (e.key === 'ArrowLeft') {
-    if (direction === 'right') return;
-    direction = 'left';
+    if (state.direction === 'right') return;
+    state.direction = 'left';
   }
 });
 
@@ -102,26 +69,28 @@ let prevTimestamp;
 function gameLoop(timestamp) {
   if (prevTimestamp === undefined) prevTimestamp = timestamp;
   const deltaTime = timestamp - prevTimestamp;
+
   if (deltaTime > 500) {
     prevTimestamp = timestamp;
+
     boardElement.innerHTML = '';
-    moveSnake(direction);
-    if (appleHit(snake[0], appleCoords)) {
+    displayApple(appleCoords);
+    Snake.display(boardElement, state.direction);
+
+    if (appleHit(Snake.head, appleCoords)) {
       appleCoords = createApple();
-      snake.push(tail);
+      Snake.grow();
     }
 
-    if (wallHit(snake[0])) {
+    if (wallHit(Snake.head)) {
       alert('WALL');
-      // location.reload();
+      location.reload();
     }
 
     if (snakeHit()) {
       alert('OUCH');
-      // location.reload();
+      location.reload();
     }
-    updateSnakePosition(snake);
-    displayApple(appleCoords);
   }
 
   window.requestAnimationFrame(gameLoop);
