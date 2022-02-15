@@ -1,8 +1,8 @@
 class Snake {
   #snake = [
-    { x: 3, y: 3 },
     { x: 3, y: 2 },
     { x: 3, y: 1 },
+    { x: 3, y: 0 },
   ];
 
   #tail;
@@ -16,7 +16,7 @@ class Snake {
     return this.#snake.map(ele => ({ ...ele }));
   }
 
-  #move(direction) {
+  move(direction) {
     this.#tail = this.#snake.at(-1);
 
     for (let i = this.#snake.length - 1; i > 0; i -= 1) {
@@ -32,9 +32,13 @@ class Snake {
     this.#snake.push(this.#tail);
   }
 
-  display(boardElement, direction) {
-    this.#move(direction);
+  snakeHit() {
+    return this.#snake
+      .slice(1)
+      .some(ele => ele.x === this.#snake[0].x && ele.y === this.#snake[0].y);
+  }
 
+  display(boardElement) {
     this.#snake.forEach(ele => {
       const snakeElement = document.createElement('div');
       snakeElement.classList.add('snake');

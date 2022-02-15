@@ -1,49 +1,25 @@
 import '../styles/main.css';
-import { createGridDOM, getRandomBoardPosition } from './Board';
+import Board from './Board';
 import Snake from './Snake';
+import Food from './Food';
 
 const boardElement = document.querySelector('.board');
+
 const state = {
+  boardSize: 10,
   direction: 'right',
+  gameOver: false,
 };
-createGridDOM(10);
+
+Board.createGrid();
 
 const appleHit = (snakeHead, apple) =>
   snakeHead.x === apple.x && snakeHead.y === apple.y;
 
-const wallHit = snakeHead =>
-  snakeHead.x < 0 ||
-  snakeHead.x === 10 ||
-  snakeHead.y < 0 ||
-  snakeHead.y === 10;
-
-const snakeHit = () =>
-  Snake.snake
-    .slice(1)
-    .some(ele => ele.x === Snake.snake[0].x && ele.y === Snake.snake[0].y);
-
-const createApple = () => {
-  const coords = getRandomBoardPosition(10);
-  if (Snake.snake.some(ele => ele.x === coords.x && ele.y === coords.y)) {
-    return createApple();
-  }
-  return coords;
-};
-
-const displayApple = coords => {
-  const apple = document.createElement('div');
-  apple.classList.add('apple');
-  apple.style.gridArea = `${coords.x + 1}/${coords.y + 1}/${coords.x + 2}/${
-    coords.y + 2
-  }`;
-  boardElement.append(apple);
-  return apple;
-};
-
-let appleCoords = createApple();
-
-displayApple(appleCoords);
-
+let appleCoords = Food.create(Snake.snake);
+Food.display(boardElement);
+Snake.display(boardElement);
+// user input
 window.addEventListener('keydown', e => {
   if (e.key === 'ArrowDown') {
     if (state.direction === 'up') return;
@@ -73,27 +49,24 @@ function gameLoop(timestamp) {
   if (deltaTime > 500) {
     prevTimestamp = timestamp;
 
-    boardElement.innerHTML = '';
-    displayApple(appleCoords);
-    Snake.display(boardElement, state.direction);
+    Snake.move(state.direction);
+
+    if (Board.wallHit(Snake.head) || Snake.snakeHit()) {
+      state.gameOver = true;
+      return;
+    }
 
     if (appleHit(Snake.head, appleCoords)) {
-      appleCoords = createApple();
+      appleCoords = Food.create(Snake.snake);
       Snake.grow();
     }
 
-    if (wallHit(Snake.head)) {
-      alert('WALL');
-      location.reload();
-    }
-
-    if (snakeHit()) {
-      alert('OUCH');
-      location.reload();
-    }
+    boardElement.innerHTML = '';
+    Food.display(boardElement);
+    Snake.display(boardElement, state.direction);
   }
 
-  window.requestAnimationFrame(gameLoop);
+  if (!state.gameOver) window.requestAnimationFrame(gameLoop);
 }
 
 window.requestAnimationFrame(gameLoop);
