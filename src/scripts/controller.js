@@ -4,21 +4,38 @@ import Snake from './Snake';
 import Food from './Food';
 
 const boardElement = document.querySelector('.board');
+const currentScore = document.querySelector('#current-score');
 
 const state = {
   boardSize: 10,
   direction: 'right',
-  gameOver: false,
+  foodCoords: null,
 };
 
-Board.createGrid();
+const foodEatenController = () => {
+  if (!Food.foodEaten(Snake.head)) return;
+  state.appleCoords = Food.create(Snake.snake);
+  Snake.grow();
+  // score
+  currentScore.textContent = Number.parseInt(currentScore.textContent, 10) + 1;
+};
 
-const appleHit = (snakeHead, apple) =>
-  snakeHead.x === apple.x && snakeHead.y === apple.y;
+const renderBoardController = () => {
+  Board.clear();
+  Food.display(boardElement);
+  Snake.display(boardElement, state.direction);
+};
 
-let appleCoords = Food.create(Snake.snake);
-Food.display(boardElement);
-Snake.display(boardElement);
+const isGameOver = () => Board.wallHit(Snake.head) || Snake.snakeHit();
+
+const init = () => {
+  Board.createGrid();
+  state.appleCoords = Food.create(Snake.snake);
+  Food.display(boardElement);
+  Snake.display(boardElement);
+};
+init();
+
 // user input
 window.addEventListener('keydown', e => {
   if (e.key === 'ArrowDown') {
@@ -45,28 +62,13 @@ let prevTimestamp;
 function gameLoop(timestamp) {
   if (prevTimestamp === undefined) prevTimestamp = timestamp;
   const deltaTime = timestamp - prevTimestamp;
-
   if (deltaTime > 500) {
     prevTimestamp = timestamp;
-
     Snake.move(state.direction);
-
-    if (Board.wallHit(Snake.head) || Snake.snakeHit()) {
-      state.gameOver = true;
-      return;
-    }
-
-    if (appleHit(Snake.head, appleCoords)) {
-      appleCoords = Food.create(Snake.snake);
-      Snake.grow();
-    }
-
-    boardElement.innerHTML = '';
-    Food.display(boardElement);
-    Snake.display(boardElement, state.direction);
+    if (isGameOver()) return;
+    foodEatenController();
+    renderBoardController();
   }
-
-  if (!state.gameOver) window.requestAnimationFrame(gameLoop);
+  window.requestAnimationFrame(gameLoop);
 }
-
 window.requestAnimationFrame(gameLoop);

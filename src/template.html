@@ -8,12 +8,21 @@
   </head>
   <body>
     <div class="main-wrapper">
-      <header><h1>Snake Game</h1></header>
+      <header class="header">
+        <h1 class="header__headings">Snake Game</h1>
+      </header>
       <section class="score">
-        <p class="current-score">Score <span>0</span></p>
-        <p class="high-score">High Score <span>0</span></p>
+        <p class="score__info">Score <span id="current-score">0</span></p>
+        <p class="score__info">High Score <span>0</span></p>
       </section>
       <main class="board"></main>
     </div>
   </body>
+
+  <div class="overlay hidden"></div>
+  <!-- <div class="options">
+    <form>
+      <button class="btn btn--new-game">New Game</button>
+    </form>
+  </div> -->
 </html>

@@ -8,6 +8,10 @@ class Board {
     this.parentElement.style.setProperty('--columns', this.#gridSize);
   }
 
+  clear() {
+    this.parentElement.innerHTML = '';
+  }
+
   getRandomBoardPosition() {
     const randNum = () => Math.floor(Math.random() * this.#gridSize);
     return { x: randNum(), y: randNum() };
