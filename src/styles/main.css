@@ -1,8 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Frijole&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Iceberg&display=swap');
 html {
   box-sizing: border-box;
   font-size: 10px;
-  font-family: 'Frijole', monospace;
+  font-family: 'Iceberg', 'Frijole', monospace;
+  text-transform: uppercase;
 }
 *,
 *::before,
@@ -12,7 +14,8 @@ html {
   padding: 0;
 }
 body {
-  background: rgb(19, 63, 88);
+  background: linear-gradient(45deg, rgb(56, 164, 226), rgb(19, 63, 88));
+  /* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
   height: 100vh;
   width: 100vw;
   color: rgb(190, 213, 233);
@@ -24,6 +27,9 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-image: url('https://www.transparenttextures.com/patterns/cubes.png');
+  background-size: 75px;
+  background-repeat: repeat;
 }
 .header__headings {
   font-size: 8vmin;
@@ -49,11 +55,11 @@ body {
 }
 
 .snake {
-  background: rgb(79, 131, 30);
-  border: 2px solid rgb(105, 89, 55);
+  background-color: rgb(38, 96, 129);
+  border: 2px solid rgb(148, 211, 200);
 }
 .apple {
-  background: rgb(199, 34, 34);
+  background: rgb(206, 69, 45);
   border-radius: 50%;
 }
 

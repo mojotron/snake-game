@@ -2,9 +2,9 @@ import '../styles/main.css';
 import Board from './Board';
 import Snake from './Snake';
 import Food from './Food';
+import Score from './Score';
 
 const boardElement = document.querySelector('.board');
-const currentScore = document.querySelector('#current-score');
 
 const state = {
   boardSize: 10,
@@ -16,8 +16,7 @@ const foodEatenController = () => {
   if (!Food.foodEaten(Snake.head)) return;
   state.appleCoords = Food.create(Snake.snake);
   Snake.grow();
-  // score
-  currentScore.textContent = Number.parseInt(currentScore.textContent, 10) + 1;
+  Score.add();
 };
 
 const renderBoardController = () => {
@@ -29,10 +28,12 @@ const renderBoardController = () => {
 const isGameOver = () => Board.wallHit(Snake.head) || Snake.snakeHit();
 
 const init = () => {
+  // TODO clear board
   Board.createGrid();
   state.appleCoords = Food.create(Snake.snake);
   Food.display(boardElement);
   Snake.display(boardElement);
+  Score.reset();
 };
 init();
 
@@ -65,7 +66,10 @@ function gameLoop(timestamp) {
   if (deltaTime > 500) {
     prevTimestamp = timestamp;
     Snake.move(state.direction);
-    if (isGameOver()) return;
+    if (isGameOver()) {
+      Score.highScoreCheck();
+      return;
+    }
     foodEatenController();
     renderBoardController();
   }
