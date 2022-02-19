@@ -72,10 +72,6 @@ body {
   left: 0;
 }
 
-.hidden {
-  display: none;
-}
-
 .options {
   position: absolute;
   top: 50%;
@@ -89,21 +85,45 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+.form {
+  height: 100%;
+  display: flex;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
 }
-
+.form__headings {
+  font-size: 3rem;
+}
+.form__section {
+}
+.form__section h3 {
+  font-size: 2rem;
+  margin-top: 1.5rem;
+}
+.form__section__field {
+  font-size: 1.5rem;
+  margin-left: 1rem;
+}
 .btn {
+  margin-top: 1.5rem;
   border-radius: 1rem;
   color: rgb(19, 63, 88);
   cursor: pointer;
   font-family: inherit;
   font-size: 2rem;
   border: none;
+  border: 1px solid rgb(19, 63, 88);
   padding: 0.5rem 2rem;
   transition: all 0.5s;
 }
 .btn:hover {
-  border: 5px solid rgb(190, 213, 233);
+  border: 1px solid rgb(190, 213, 233);
   color: rgb(190, 213, 233);
   background: linear-gradient(45deg, rgb(56, 164, 226), rgb(19, 63, 88));
+}
+.hidden {
+  display: none;
 }

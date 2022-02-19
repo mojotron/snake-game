@@ -1,9 +1,11 @@
 class Snake {
-  #snake = [
+  #newSnake = [
     { x: 3, y: 2 },
     { x: 3, y: 1 },
     { x: 3, y: 0 },
   ];
+
+  #snake;
 
   #tail;
 
@@ -14,6 +16,14 @@ class Snake {
   get snake() {
     // TEMP function
     return this.#snake.map(ele => ({ ...ele }));
+  }
+
+  constructor() {
+    this.new();
+  }
+
+  new() {
+    this.#snake = this.#newSnake.map(ele => ({ ...ele }));
   }
 
   move(direction) {

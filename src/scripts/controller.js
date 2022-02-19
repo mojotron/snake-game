@@ -3,11 +3,13 @@ import Board from './Board';
 import Snake from './Snake';
 import Food from './Food';
 import Score from './Score';
+import OptionsModal from './OptionsModal';
 
 const boardElement = document.querySelector('.board');
 
 const state = {
   boardSize: 10,
+  snakeSpeed: 'slow',
   direction: 'right',
   foodCoords: null,
 };
@@ -28,14 +30,14 @@ const renderBoardController = () => {
 const isGameOver = () => Board.wallHit(Snake.head) || Snake.snakeHit();
 
 const init = () => {
-  // TODO clear board
   Board.createGrid();
+  Snake.new();
+  state.direction = 'right';
   state.appleCoords = Food.create(Snake.snake);
   Food.display(boardElement);
   Snake.display(boardElement);
   Score.reset();
 };
-init();
 
 // user input
 window.addEventListener('keydown', e => {
@@ -68,6 +70,7 @@ function gameLoop(timestamp) {
     Snake.move(state.direction);
     if (isGameOver()) {
       Score.highScoreCheck();
+      OptionsModal.show();
       return;
     }
     foodEatenController();
@@ -75,4 +78,17 @@ function gameLoop(timestamp) {
   }
   window.requestAnimationFrame(gameLoop);
 }
-window.requestAnimationFrame(gameLoop);
+
+const startGameController = () => {
+  init();
+  OptionsModal.hide();
+  window.requestAnimationFrame(gameLoop);
+};
+
+document.querySelector('.btn--start-new').addEventListener('click', e => {
+  e.preventDefault();
+  const size = document.querySelector('input[name="size"]:checked').value;
+  const speed = document.querySelector('input[name="speed"]:checked').value;
+  console.log(size, speed);
+  startGameController();
+});

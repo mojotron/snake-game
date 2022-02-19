@@ -20,7 +20,48 @@
   </body>
 
   <div class="overlay hidden"></div>
+
   <div class="options">
-    <button class="btn btn--start-new">Start New Game</button>
+    <form class="form">
+      <h2 class="form__headings">new game options</h2>
+      <div class="form__section">
+        <h3>Board size</h3>
+        <div class="form__section__field">
+          <input type="radio" name="size" id="size-small" value="10" checked />
+          <label for="size-small">10x10</label>
+        </div>
+        <div class="form__section__field">
+          <input type="radio" name="size" id="size-normal" value="15" />
+          <label for="size-normal">15x15</label>
+        </div>
+        <div class="form__section__field">
+          <input type="radio" name="size" id="size-large" value="20" />
+          <label for="size-large">20x20</label>
+        </div>
+      </div>
+
+      <div class="form__section">
+        <h3>Snake speed</h3>
+        <div class="form__section__field">
+          <input
+            type="radio"
+            name="speed"
+            id="speed-slow"
+            value="slow"
+            checked
+          />
+          <label for="speed-slow">Slow</label>
+        </div>
+        <div class="form__section__field">
+          <input type="radio" name="speed" id="speed-normal" value="normal" />
+          <label for="speed-normal">Normal</label>
+        </div>
+        <div class="form__section__field">
+          <input type="radio" name="speed" id="speed-fast" value="fast" />
+          <label for="speed-fast">Fast</label>
+        </div>
+      </div>
+      <button class="btn btn--start-new">Start New Game</button>
+    </form>
   </div>
 </html>
