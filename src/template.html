@@ -12,8 +12,17 @@
         <h1 class="header__headings">Snake Game</h1>
       </header>
       <section class="score">
-        <p class="score__info">Score: <span id="current-score">0</span></p>
-        <p class="score__info">High Score: <span id="high-score">0</span></p>
+        <div>
+          <p class="score__headings">Current game</p>
+          <p class="score__info">Score: <span id="current-score">0</span></p>
+        </div>
+
+        <div>
+          <p class="score__headings">
+            Grid: <span>normal</span> | Speed: <span>normal</span>
+          </p>
+          <p class="score__info">High Score: <span id="high-score">0</span></p>
+        </div>
       </section>
       <main class="board"></main>
     </div>
@@ -27,15 +36,21 @@
       <div class="form__section">
         <h3>Board size</h3>
         <div class="form__section__field">
-          <input type="radio" name="size" id="size-small" value="10" checked />
+          <input
+            type="radio"
+            name="size"
+            id="size-small"
+            value="small"
+            checked
+          />
           <label for="size-small">10x10</label>
         </div>
         <div class="form__section__field">
-          <input type="radio" name="size" id="size-normal" value="15" />
+          <input type="radio" name="size" id="size-normal" value="normal" />
           <label for="size-normal">15x15</label>
         </div>
         <div class="form__section__field">
-          <input type="radio" name="size" id="size-large" value="20" />
+          <input type="radio" name="size" id="size-large" value="large" />
           <label for="size-large">20x20</label>
         </div>
       </div>

@@ -5,11 +5,13 @@ import Food from './Food';
 import Score from './Score';
 import OptionsModal from './OptionsModal';
 
+import gameOptions from './config';
+
 const boardElement = document.querySelector('.board');
 
 const state = {
-  boardSize: 10,
-  snakeSpeed: 'slow',
+  gridSize: 10,
+  snakeSpeed: 500,
   direction: 'right',
   foodCoords: null,
 };
@@ -30,7 +32,7 @@ const renderBoardController = () => {
 const isGameOver = () => Board.wallHit(Snake.head) || Snake.snakeHit();
 
 const init = () => {
-  Board.createGrid();
+  Board.createGrid(state.gridSize);
   Snake.new();
   state.direction = 'right';
   state.appleCoords = Food.create(Snake.snake);
@@ -65,7 +67,7 @@ let prevTimestamp;
 function gameLoop(timestamp) {
   if (prevTimestamp === undefined) prevTimestamp = timestamp;
   const deltaTime = timestamp - prevTimestamp;
-  if (deltaTime > 500) {
+  if (deltaTime > state.snakeSpeed) {
     prevTimestamp = timestamp;
     Snake.move(state.direction);
     if (isGameOver()) {
@@ -89,6 +91,7 @@ document.querySelector('.btn--start-new').addEventListener('click', e => {
   e.preventDefault();
   const size = document.querySelector('input[name="size"]:checked').value;
   const speed = document.querySelector('input[name="speed"]:checked').value;
-  console.log(size, speed);
+  state.gridSize = gameOptions.size[size];
+  state.snakeSpeed = gameOptions.speed[speed];
   startGameController();
 });

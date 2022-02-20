@@ -54,3 +54,21 @@ class Score {
 }
 
 export default new Score();
+
+// const temp = {
+//   small: {
+//     slow: 0,
+//     normal: 0,
+//     fast: 0,
+//   },
+//   normal: {
+//     slow: 0,
+//     normal: 0,
+//     fast: 0,
+//   },
+//   large: {
+//     slow: 0,
+//     normal: 0,
+//     fast: 0,
+//   },
+// };

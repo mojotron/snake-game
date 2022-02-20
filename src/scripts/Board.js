@@ -1,15 +1,16 @@
 class Board {
-  parentElement = document.querySelector('.board');
+  #parentElement = document.querySelector('.board');
 
-  #gridSize = 10;
+  #gridSize;
 
-  createGrid() {
-    this.parentElement.style.setProperty('--rows', this.#gridSize);
-    this.parentElement.style.setProperty('--columns', this.#gridSize);
+  createGrid(gridSize) {
+    this.#gridSize = gridSize;
+    this.#parentElement.style.setProperty('--rows', this.#gridSize);
+    this.#parentElement.style.setProperty('--columns', this.#gridSize);
   }
 
   clear() {
-    this.parentElement.innerHTML = '';
+    this.#parentElement.innerHTML = '';
   }
 
   getRandomBoardPosition() {
