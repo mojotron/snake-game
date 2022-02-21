@@ -10,17 +10,55 @@ import gameOptions from './config';
 const boardElement = document.querySelector('.board');
 
 const state = {
-  gridSize: 10,
-  snakeSpeed: 500,
+  gridSize: 'small',
+  snakeSpeed: 'slow',
   direction: 'right',
   foodCoords: null,
+  currentScore: 0,
+  highScore: {
+    small: {
+      slow: 0,
+      normal: 0,
+      fast: 0,
+    },
+    normal: {
+      slow: 0,
+      normal: 0,
+      fast: 0,
+    },
+    large: {
+      slow: 0,
+      normal: 0,
+      fast: 0,
+    },
+  },
 };
+
+// local storage
+const getLocalStorage = () => {
+  const storage = localStorage.getItem('highScores');
+  if (storage) state.highScore = JSON.parse(storage);
+};
+
+const setLocalStorage = () => {
+  localStorage.setItem('highScores', JSON.stringify(state.highScore));
+};
+
+const checkHighScore = () => {
+  if (state.currentScore > state.highScore[state.gridSize][state.snakeSpeed]) {
+    state.highScore[state.gridSize][state.snakeSpeed] = state.currentScore;
+    setLocalStorage();
+    Score.updateHighScore(state.highScore[state.gridSize][state.snakeSpeed]);
+  }
+};
+getLocalStorage();
 
 const foodEatenController = () => {
   if (!Food.foodEaten(Snake.head)) return;
   state.appleCoords = Food.create(Snake.snake);
   Snake.grow();
-  Score.add();
+  state.currentScore += 1;
+  Score.displayCurrentScore(state.currentScore);
 };
 
 const renderBoardController = () => {
@@ -32,13 +70,15 @@ const renderBoardController = () => {
 const isGameOver = () => Board.wallHit(Snake.head) || Snake.snakeHit();
 
 const init = () => {
-  Board.createGrid(state.gridSize);
+  Board.createGrid(gameOptions.size[state.gridSize]);
   Snake.new();
   state.direction = 'right';
   state.appleCoords = Food.create(Snake.snake);
+  state.currentScore = 0;
+  Score.displayCurrentScore(state.currentScore);
   Food.display(boardElement);
   Snake.display(boardElement);
-  Score.reset();
+  // Score.reset();
 };
 
 // user input
@@ -67,11 +107,12 @@ let prevTimestamp;
 function gameLoop(timestamp) {
   if (prevTimestamp === undefined) prevTimestamp = timestamp;
   const deltaTime = timestamp - prevTimestamp;
-  if (deltaTime > state.snakeSpeed) {
+  if (deltaTime > gameOptions.speed[state.snakeSpeed]) {
     prevTimestamp = timestamp;
     Snake.move(state.direction);
     if (isGameOver()) {
-      Score.highScoreCheck();
+      // Score.highScoreCheck();
+      checkHighScore();
       OptionsModal.show();
       return;
     }
@@ -89,9 +130,14 @@ const startGameController = () => {
 
 document.querySelector('.btn--start-new').addEventListener('click', e => {
   e.preventDefault();
+  // read data from user input
   const size = document.querySelector('input[name="size"]:checked').value;
   const speed = document.querySelector('input[name="speed"]:checked').value;
-  state.gridSize = gameOptions.size[size];
-  state.snakeSpeed = gameOptions.speed[speed];
+  // 1 update state
+  state.gridSize = size;
+  state.snakeSpeed = speed;
+  // get data from local storage and update score ui
+  Score.updateScoreOptions(state.gridSize, state.snakeSpeed);
+  Score.updateHighScore(state.highScore[state.gridSize][state.snakeSpeed]);
   startGameController();
 });

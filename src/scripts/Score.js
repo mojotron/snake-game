@@ -3,72 +3,50 @@ class Score {
 
   #highScoreElement = document.getElementById('high-score');
 
-  #currentScore = 0;
+  #gridSizeElement = document.querySelector('.score__grid-size');
 
-  #highScore;
+  #snakeSpeedElement = document.querySelector('.score__snake-speed');
 
-  constructor() {
-    this.#highScore = this.#getLocalStorage() || 0;
-    this.#updateHighScore();
+  displayCurrentScore(score) {
+    this.#currentScoreElement.textContent = score;
   }
 
-  reset() {
-    this.#currentScore = 0;
-    this.#currentScoreElement.textContent = 0;
+  updateScoreOptions(gridSize, snakeSpeed) {
+    this.#gridSizeElement.textContent = gridSize;
+    this.#snakeSpeedElement.textContent = snakeSpeed;
   }
 
-  add() {
-    this.#currentScore += 1;
-    this.#update();
+  updateHighScore(score) {
+    this.#highScoreElement.textContent = score;
   }
 
-  #update() {
-    this.#currentScoreElement.textContent = this.#currentScore;
-  }
+  // reset() {
+  //   this.#currentScore = 0;
+  //
+  // }
 
-  highScoreCheck() {
-    if (this.#currentScore > this.#highScore) {
-      this.#highScore = this.#currentScore;
-      this.#highScoreElement.textContent = this.#highScore;
-      // TODO save new score to local storage
-      this.#setLocalStorage();
-      this.#updateHighScore();
-    }
-  }
+  // add() {
+  //   this.#currentScore += 1;
+  //   this.#update();
+  // }
 
-  #setLocalStorage() {
-    localStorage.setItem('snakeHighScore', this.#highScore);
-  }
+  // #update() {
+  //   this.#currentScoreElement.textContent = this.#currentScore;
+  // }
 
-  #getLocalStorage() {
-    return localStorage.getItem('snakeHighScore');
-  }
+  // highScoreCheck() {
+  //   if (this.#currentScore > this.#highScore) {
+  //     this.#highScore = this.#currentScore;
+  //     this.#highScoreElement.textContent = this.#highScore;
+  //     // TODO save new score to local storage
+  //     this.#setLocalStorage();
+  //     this.#updateHighScore();
+  //   }
+  // }
 
-  #updateHighScore() {
-    this.#highScoreElement.textContent = this.#highScore;
-  }
-
-  clearLocalStorage() {
-    localStorage.removeItem('snakeHighScore');
-  }
+  // #updateHighScore() {
+  //   this.#highScoreElement.textContent = this.#highScore;
+  // }
 }
 
 export default new Score();
-
-// const temp = {
-//   small: {
-//     slow: 0,
-//     normal: 0,
-//     fast: 0,
-//   },
-//   normal: {
-//     slow: 0,
-//     normal: 0,
-//     fast: 0,
-//   },
-//   large: {
-//     slow: 0,
-//     normal: 0,
-//     fast: 0,
-//   },
-// };
