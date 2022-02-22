@@ -76,6 +76,7 @@ const init = () => {
   state.appleCoords = Food.create(Snake.snake);
   state.currentScore = 0;
   Score.displayCurrentScore(state.currentScore);
+  Score.updateHighScore(state.highScore[state.gridSize][state.snakeSpeed]);
   Food.display(boardElement);
   Snake.display(boardElement);
   // Score.reset();
@@ -114,6 +115,7 @@ function gameLoop(timestamp) {
       // Score.highScoreCheck();
       checkHighScore();
       OptionsModal.show();
+      console.log(Snake.snake);
       return;
     }
     foodEatenController();
@@ -138,6 +140,5 @@ document.querySelector('.btn--start-new').addEventListener('click', e => {
   state.snakeSpeed = speed;
   // get data from local storage and update score ui
   Score.updateScoreOptions(state.gridSize, state.snakeSpeed);
-  Score.updateHighScore(state.highScore[state.gridSize][state.snakeSpeed]);
   startGameController();
 });
