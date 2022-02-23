@@ -62,15 +62,17 @@ body {
 
 .snake {
   background-color: rgb(38, 96, 129);
-  border: 2px solid rgb(148, 211, 200);
+  border: 1px solid rgb(148, 211, 200);
 }
 .snake-head {
-  background-color: rgb(41, 129, 38);
-  border: 2px solid rgb(148, 211, 200);
+  background-color: rgb(38, 96, 129);
+  border: 1px solid rgb(148, 211, 200);
+  border-radius: 0 50% 50% 0;
 }
 .snake-tail {
-  background-color: rgb(129, 38, 109);
-  border: 2px solid rgb(148, 211, 200);
+  background-color: rgb(38, 96, 129);
+  border: 1px solid rgb(148, 211, 200);
+  border-radius: 50% 0 0 50%;
 }
 .snake-bottom-left {
   border-radius: 0 0 0 50%;
@@ -83,6 +85,19 @@ body {
 }
 .snake-top-right {
   border-radius: 0 50% 0 0;
+}
+/**/
+.snake-rotate-up {
+  transform: rotate(270deg);
+}
+.snake-rotate-right {
+  transform: rotate(0deg);
+}
+.snake-rotate-down {
+  transform: rotate(90deg);
+}
+.snake-rotate-left {
+  transform: rotate(180deg);
 }
 
 .apple {
