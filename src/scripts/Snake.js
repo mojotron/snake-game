@@ -57,6 +57,11 @@ class Snake {
       }`;
       // TODO snake style logic;
       if (i === 0) {
+        snakeElement.innerHTML = `
+          <div class="snake-head__eye"></div>
+          <div class="snake-head__eye"></div>
+          <div class="snake-head__tongue hidden"></div>
+        `;
         snakeElement.classList.add('snake-head');
         snakeElement.classList.add(`snake-rotate-${this.#snake[0].direction}`);
       } else if (i === this.#snake.length - 1) {

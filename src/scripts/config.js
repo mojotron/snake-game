@@ -7,6 +7,6 @@ export default {
   speed: {
     slow: 500,
     normal: 350,
-    fast: 200,
+    fast: 150,
   },
 };

@@ -68,6 +68,67 @@ body {
   background-color: rgb(38, 96, 129);
   border: 1px solid rgb(148, 211, 200);
   border-radius: 0 50% 50% 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  position: relative;
+}
+.snake-head__eye {
+  border-radius: 50%;
+  margin-left: 0.8rem;
+  height: 35%;
+  width: 35%;
+  background: white;
+}
+.dead {
+  height: 5%;
+  border-radius: 50;
+  margin-left: 0.8rem;
+  height: 50%;
+  width: 10%;
+  background: white;
+}
+.snake-head__eye::after {
+  content: '';
+  display: block;
+  border-radius: 50%;
+  height: 50%;
+  width: 50%;
+  background: black;
+  position: relative;
+  top: 25%;
+  left: 50%;
+}
+.snake-head__tongue {
+  position: absolute;
+  height: 5%;
+  width: 30%;
+  background-color: red;
+  right: -10%;
+  bottom: 15%;
+  transform: rotate(75deg);
+}
+.snake-head__tongue::after {
+  content: '';
+  display: block;
+  position: relative;
+  background-color: red;
+  height: 100%;
+  width: 50%;
+  left: 75%;
+  bottom: 10%;
+  transform: rotate(35deg);
+}
+.snake-head__tongue::before {
+  content: '';
+  display: block;
+  position: relative;
+  background-color: red;
+  height: 100%;
+  width: 50%;
+  left: 75%;
+  bottom: -1%;
+  transform: rotate(-35deg);
 }
 .snake-tail {
   background-color: rgb(38, 96, 129);
@@ -75,16 +136,16 @@ body {
   border-radius: 50% 0 0 50%;
 }
 .snake-bottom-left {
-  border-radius: 0 0 0 50%;
+  border-radius: 0 0 0 150px;
 }
 .snake-bottom-right {
-  border-radius: 0 0 50% 0;
+  border-radius: 0 0 150px 0;
 }
 .snake-top-left {
-  border-radius: 50% 0 0 0;
+  border-radius: 150px 0 0 0;
 }
 .snake-top-right {
-  border-radius: 0 50% 0 0;
+  border-radius: 0 150px 0 0;
 }
 /**/
 .snake-rotate-up {
@@ -143,15 +204,6 @@ body {
   left: 20%;
   border-radius: 50%;
   transform: rotate(100deg);
-}
-
-.overlay {
-  height: 100vh;
-  width: 100vw;
-  background: rgba(19, 63, 88, 0.5);
-  position: fixed;
-  top: 0;
-  left: 0;
 }
 
 .options {
