@@ -6,18 +6,11 @@ import Food from './Food';
 import Score from './Score';
 import OptionsModal from './OptionsModal';
 import './user-input';
-import gameOptions from './config';
+import { GAME_OPTIONS, START_DIRECTION } from './config';
 
-const boardElement = document.querySelector('.board'); // TODO
-
-const checkHighScore = () => {
-  if (
-    Model.state.currentScore >
-    Model.state.highScore[Model.state.gridSize][Model.state.snakeSpeed]
-  ) {
-    Model.state.highScore[Model.state.gridSize][Model.state.snakeSpeed] =
-      Model.state.currentScore;
-    Model.setLocalStorage();
+const highScoreController = () => {
+  if (Model.checkHighScore()) {
+    Model.updateHighScore();
     Score.updateHighScore(
       Model.state.highScore[Model.state.gridSize][Model.state.snakeSpeed]
     );
@@ -34,24 +27,24 @@ const foodEatenController = () => {
 
 const renderBoardController = () => {
   Board.clear();
-  Food.display(boardElement);
-  Snake.display(boardElement, Model.state.direction);
+  Food.display(Board.element);
+  Snake.display(Board.element, Model.state.direction);
 };
 
 const isGameOver = () => Board.wallHit(Snake.head) || Snake.snakeHit();
 
 const init = () => {
-  Board.createGrid(gameOptions.size[Model.state.gridSize]);
+  Board.createGrid(GAME_OPTIONS.size[Model.state.gridSize]);
   Snake.new();
-  Model.state.direction = 'right';
+  Model.state.direction = START_DIRECTION;
   Model.state.appleCoords = Food.create(Snake.snake);
   Model.state.currentScore = 0;
   Score.displayCurrentScore(Model.state.currentScore);
   Score.updateHighScore(
     Model.state.highScore[Model.state.gridSize][Model.state.snakeSpeed]
   );
-  Food.display(boardElement);
-  Snake.display(boardElement);
+  Food.display(Board.element);
+  Snake.display(Board.element);
 };
 
 // GAME LOOP
@@ -60,12 +53,12 @@ let prevTimestamp;
 function gameLoop(timestamp) {
   if (prevTimestamp === undefined) prevTimestamp = timestamp;
   const deltaTime = timestamp - prevTimestamp;
-  if (deltaTime > gameOptions.speed[Model.state.snakeSpeed]) {
+  if (deltaTime > GAME_OPTIONS.speed[Model.state.snakeSpeed]) {
     prevTimestamp = timestamp;
     Snake.move(Model.state.direction);
     if (isGameOver()) {
       // Score.highScoreCheck();
-      checkHighScore();
+      highScoreController();
       // TEMP
       document
         .querySelectorAll('.snake-head__eye')
@@ -87,15 +80,12 @@ const startGameController = () => {
   window.requestAnimationFrame(gameLoop);
 };
 
-document.querySelector('.btn--start-new').addEventListener('click', e => {
-  e.preventDefault();
-  // read data from user input
-  const size = document.querySelector('input[name="size"]:checked').value;
-  const speed = document.querySelector('input[name="speed"]:checked').value;
-  // 1 update Model.state
+const newGameController = (size, speed) => {
   Model.state.gridSize = size;
   Model.state.snakeSpeed = speed;
   // get data from local storage and update score ui
   Score.updateScoreOptions(Model.state.gridSize, Model.state.snakeSpeed);
   startGameController();
-});
+};
+
+OptionsModal.addClickHandler(newGameController);

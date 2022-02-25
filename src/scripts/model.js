@@ -28,8 +28,19 @@ const getLocalStorage = () => {
   if (storage) state.highScore = JSON.parse(storage);
 };
 
-getLocalStorage();
-
-export const setLocalStorage = () => {
+const setLocalStorage = () => {
   localStorage.setItem('highScores', JSON.stringify(state.highScore));
 };
+
+export const checkHighScore = () =>
+  state.currentScore > state.highScore[state.gridSize][state.snakeSpeed];
+
+export const updateHighScore = () => {
+  state.highScore[state.gridSize][state.snakeSpeed] = state.currentScore;
+  setLocalStorage();
+};
+
+const init = () => {
+  getLocalStorage();
+};
+init();

@@ -3,6 +3,10 @@ class Board {
 
   #gridSize;
 
+  get element() {
+    return this.#parentElement;
+  }
+
   createGrid(gridSize) {
     this.#gridSize = gridSize;
     this.#parentElement.style.setProperty('--rows', this.#gridSize);

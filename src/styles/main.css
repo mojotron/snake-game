@@ -186,7 +186,7 @@ body {
   right: 1%;
   transform: translateY(-50%);
 }
-.peteljka {
+.petiole {
   position: absolute;
   top: 1%;
   left: 50%;
@@ -195,7 +195,7 @@ body {
   background: brown;
   transform: rotate(10deg);
 }
-.leef {
+.leaf {
   position: absolute;
   height: 50%;
   width: 15%;

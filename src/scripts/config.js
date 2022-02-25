@@ -1,4 +1,4 @@
-export default {
+export const GAME_OPTIONS = {
   size: {
     small: 10,
     normal: 15,
@@ -10,3 +10,5 @@ export default {
     fast: 150,
   },
 };
+
+export const START_DIRECTION = 'right';
