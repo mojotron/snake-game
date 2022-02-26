@@ -1,9 +1,12 @@
+import { SNAKE_START_COORDS } from './config';
+import createDomElement from './helpers';
+
 class Snake {
-  #newSnake = [
-    { x: 3, y: 2, direction: 'right' },
-    { x: 3, y: 1, direction: 'right' },
-    { x: 3, y: 0, direction: 'right' },
-  ];
+  #innerHeadHTML = `
+    <div class="snake-head__eye"></div>
+    <div class="snake-head__eye"></div>
+    <div class="snake-head__tongue hidden"></div>
+  `;
 
   #snake;
 
@@ -14,7 +17,6 @@ class Snake {
   }
 
   get snake() {
-    // TEMP function
     return this.#snake.map(ele => ({ ...ele }));
   }
 
@@ -23,7 +25,7 @@ class Snake {
   }
 
   new() {
-    this.#snake = this.#newSnake.map(ele => ({ ...ele }));
+    this.#snake = SNAKE_START_COORDS.map(ele => ({ ...ele }));
   }
 
   move(direction) {
@@ -51,17 +53,9 @@ class Snake {
 
   display(boardElement) {
     this.#snake.forEach((ele, i) => {
-      const snakeElement = document.createElement('div');
-      snakeElement.style.gridArea = `${ele.x + 1}/${ele.y + 1}/${ele.x + 2}/${
-        ele.y + 2
-      }`;
-      // TODO snake style logic;
+      const snakeElement = createDomElement(this.#snake[i], 'snake');
       if (i === 0) {
-        snakeElement.innerHTML = `
-          <div class="snake-head__eye"></div>
-          <div class="snake-head__eye"></div>
-          <div class="snake-head__tongue hidden"></div>
-        `;
+        snakeElement.innerHTML = this.#innerHeadHTML;
         snakeElement.classList.add('snake-head');
         snakeElement.classList.add(`snake-rotate-${this.#snake[0].direction}`);
       } else if (i === this.#snake.length - 1) {
@@ -88,7 +82,6 @@ class Snake {
         if (curr === 'down' && prev === 'left')
           snakeElement.classList.add(`snake-rotate-left`);
       } else {
-        snakeElement.classList.add('snake');
         const prev = this.#snake[i - 1].direction;
         const curr = this.#snake[i].direction;
         if (curr === 'left' && prev === 'down')
@@ -111,6 +104,13 @@ class Snake {
       }
       boardElement.append(snakeElement);
     });
+  }
+
+  addGameOverEffect() {
+    document
+      .querySelectorAll('.snake-head__eye')
+      .forEach(el => el.classList.add('dead'));
+    document.querySelector('.snake-head__tongue').classList.remove('hidden');
   }
 }
 

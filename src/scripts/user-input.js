@@ -1,6 +1,7 @@
 import { state } from './model';
 
 window.addEventListener('keydown', e => {
+  if (state.newInput) return; // stop for to fast key pressing between raF calls
   if (e.key === 'ArrowDown') {
     if (state.direction === 'up') return;
     state.direction = 'down';
@@ -17,4 +18,5 @@ window.addEventListener('keydown', e => {
     if (state.direction === 'right') return;
     state.direction = 'left';
   }
+  state.newInput = true; // stop for to fast key pressing between raF calls
 });

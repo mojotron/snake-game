@@ -19,7 +19,10 @@ const highScoreController = () => {
 
 const foodEatenController = () => {
   if (!Food.foodEaten(Snake.head)) return;
-  Model.state.appleCoords = Food.create(Snake.snake);
+  Model.state.appleCoords = Food.createCoords(
+    Snake.snake,
+    GAME_OPTIONS.size[Model.state.gridSize]
+  );
   Snake.grow();
   Model.state.currentScore += 1;
   Score.displayCurrentScore(Model.state.currentScore);
@@ -37,7 +40,10 @@ const init = () => {
   Board.createGrid(GAME_OPTIONS.size[Model.state.gridSize]);
   Snake.new();
   Model.state.direction = START_DIRECTION;
-  Model.state.appleCoords = Food.create(Snake.snake);
+  Model.state.appleCoords = Food.createCoords(
+    Snake.snake,
+    GAME_OPTIONS.size[Model.state.gridSize]
+  );
   Model.state.currentScore = 0;
   Score.displayCurrentScore(Model.state.currentScore);
   Score.updateHighScore(
@@ -60,16 +66,13 @@ function gameLoop(timestamp) {
       // Score.highScoreCheck();
       highScoreController();
       // TEMP
-      document
-        .querySelectorAll('.snake-head__eye')
-        .forEach(el => el.classList.add('dead'));
-      document.querySelector('.snake-head__tongue').classList.remove('hidden');
+      Snake.addGameOverEffect();
       OptionsModal.show();
-      // TODO display when snake hits body
       return;
     }
     foodEatenController();
     renderBoardController();
+    Model.state.newInput = false; // stop for to fast key pressing between raF calls
   }
   window.requestAnimationFrame(gameLoop);
 }

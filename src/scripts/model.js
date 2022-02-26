@@ -1,4 +1,5 @@
 export const state = {
+  newInput: false, // stop for to fast key pressing between raF calls
   gridSize: 'small',
   snakeSpeed: 'slow',
   direction: 'right',
