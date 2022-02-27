@@ -6,7 +6,7 @@ export const GAME_OPTIONS = {
   },
   speed: {
     slow: 500,
-    normal: 350,
+    normal: 300,
     fast: 150,
   },
 };

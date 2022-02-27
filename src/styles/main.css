@@ -1,7 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Frijole&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Iceberg&display=swap');
 :root {
-  --gradient: linear-gradient(45deg, rgb(56, 164, 226), rgb(8, 33, 48));
+  --light-blue: rgb(56, 164, 226);
+  --dark-blue: rgb(8, 33, 48);
+  --apple-red: rgb(197, 54, 54);
+  --text-color: rgb(190, 213, 233);
+  --gradient: linear-gradient(45deg, var(--light-blue), var(--dark-blue));
 }
 html {
   box-sizing: border-box;
@@ -18,10 +22,9 @@ html {
 }
 body {
   background: var(--gradient);
-  /* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
   height: 100vh;
   width: 100vw;
-  color: rgb(190, 213, 233);
+  color: var(--text-color);
 }
 .main-wrapper {
   height: inherit;
@@ -56,7 +59,7 @@ body {
   display: grid;
   grid-template-rows: repeat(var(--rows), 1fr);
   grid-template-columns: repeat(var(--columns), 1fr);
-  background-color: rgb(190, 213, 233);
+  background-color: var(--text-color);
   border-radius: 3px;
 }
 
@@ -101,7 +104,7 @@ body {
   position: absolute;
   height: 5%;
   width: 30%;
-  background-color: red;
+  background-color: var(--apple-red);
   right: -10%;
   bottom: 15%;
   transform: rotate(75deg);
@@ -110,7 +113,7 @@ body {
   content: '';
   display: block;
   position: relative;
-  background-color: red;
+  background-color: var(--apple-red);
   height: 100%;
   width: 50%;
   left: 75%;
@@ -121,7 +124,7 @@ body {
   content: '';
   display: block;
   position: relative;
-  background-color: red;
+  background-color: var(--apple-red);
   height: 100%;
   width: 50%;
   left: 75%;
@@ -143,7 +146,6 @@ body {
 .snake-top-right {
   border-radius: 0 150px 0 0;
 }
-/**/
 .snake-rotate-up {
   transform: rotate(270deg);
 }
@@ -168,7 +170,7 @@ body {
   height: 75%;
   width: 75%;
   border-radius: 50%;
-  background: rgb(197, 54, 54);
+  background: var(--apple-red);
 }
 .body-1 {
   position: absolute;
@@ -188,14 +190,14 @@ body {
   left: 50%;
   height: 20%;
   width: 3%;
-  background: brown;
+  background: rgb(102, 28, 28);
   transform: rotate(10deg);
 }
 .leaf {
   position: absolute;
   height: 50%;
   width: 15%;
-  background: green;
+  background: rgb(12, 204, 12);
   top: -12%;
   left: 20%;
   border-radius: 50%;
@@ -226,8 +228,6 @@ body {
 }
 .form__headings {
   font-size: 3.5vmin;
-}
-.form__section {
 }
 .form__section h3 {
   font-size: 2.5vmin;
