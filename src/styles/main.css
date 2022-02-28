@@ -33,7 +33,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-image: url('https://www.transparenttextures.com/patterns/cubes.png');
+  background-image: url('../images/cubes.png');
   background-size: 75px;
   background-repeat: repeat;
 }
